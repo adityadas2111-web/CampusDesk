@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: campusdesk
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt && pip install 'gunicorn>=23,<26'
+    startCommand: python seed.py && gunicorn 'app:create_app()' --bind 0.0.0.0:$PORT --workers 1 --threads 4
+    healthCheckPath: /
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: 3.12.8
